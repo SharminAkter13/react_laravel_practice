@@ -7,60 +7,40 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Get all categories
     public function index()
     {
-         $categories = Category::all();
-    return $categories;
+        return Category::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store a new category
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+        ]);
+
+        return Category::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
+    // Update an existing category
+    public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) return response()->json(['message' => 'Category not found'], 404);
+
+        $category->update($request->all());
+        return $category;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
+    // Delete a category
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Category $category)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
+        $deleted = Category::destroy($id);
+        if ($deleted) {
+            return response()->json(['message' => 'Category deleted successfully']);
+        } else {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
     }
 }
