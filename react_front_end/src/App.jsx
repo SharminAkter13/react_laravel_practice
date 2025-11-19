@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Category from './component/Category';
 import AddCategoey from './component/AddCategoey';
 import Edit from './component/Edit';
-import { NavLink } from 'react-router-dom';
 
 
 const App = () => {
