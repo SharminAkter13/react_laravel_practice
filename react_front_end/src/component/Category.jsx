@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { NavLink } from 'react-router-dom';
 
 function Category() {
   const [categories, setCategory] = useState([]);
@@ -45,7 +46,9 @@ function Category() {
                     <tr key={i}>
                       <th scope="row">{i + 1}</th>
                       <td>{p.name}</td>
-                      <td><button onClick={() =>deleteCategory(p.id)}><i className="bi bi-trash3-fill"></i></button></td>
+                      <td><button onClick={() =>deleteCategory(p.id)}><i className="bi bi-trash3-fill"></i></button>
+                       <NavLink to={`/edit/${p.id}`} className="btn btn-info mx-2"><i class="bi bi-pencil-square"></i></NavLink>
+                      </td>
                     </tr>
                   ))
                 ) : (
