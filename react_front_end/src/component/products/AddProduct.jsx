@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Product from './component/products/Product';
+import Product from './Product';
+
 
 const AddProduct = () => {
-    const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
-    const [ProductField, setProductField] = useState({
+    const [categories, setCategories] = useState([]);
+
+    const [productField, setProductField] = useState({
         name: "",
         price: "",
         description: "",
         category_id: ""
-
     });
-    const [loading, setLoading] = useState(false);
 
-    // Handle input field change
+
+    // Input handler
     const changeProductFieldHandler = (e) => {
         setProductField({
-            ...ProductField,
+            ...productField,
             [e.target.name]: e.target.value,
         });
     };
 
-    // Fetch products from the API
+    // Fetch products
     const fetchProduct = async () => {
         try {
             const response = await axios.get("http://127.0.0.1:8000/api/products");
@@ -31,24 +32,34 @@ const AddProduct = () => {
             console.error("Error fetching products:", error);
         }
     };
+
+    // Fetch categories
     const fetchCategories = async () => {
-    try {
-        const response = await axios.get("http://127.0.0.1:8000/api/categories");
-        setCategories(response.data);
-    } catch (error) {
-        console.error("Error fetching categories:", error);
-    }
-};
-
-
-    // Create a new Product by sending data to the API
-    const createProduct = async (e) => {
-        e.preventDefault(); // Prevent the form from submitting the default way
-        setLoading(true);
         try {
-            await axios.post("http://127.0.0.1:8000/api/products", ProductField);
-            fetchProduct(); // Re-fetch the updated Product list
-            setProductField({ name: "" }); // Clear the input field after adding
+            const response = await axios.get("http://127.0.0.1:8000/api/categories");
+            setCategories(response.data);
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
+    };
+
+    // Create product
+    const createProduct = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            await axios.post("http://127.0.0.1:8000/api/products", productField);
+            fetchProduct();
+
+            // Clear form
+            setProductField({
+                name: "",
+                price: "",
+                description: "",
+                category_id: ""
+            });
+
         } catch (error) {
             console.error("Error creating Product:", error);
         } finally {
@@ -59,7 +70,22 @@ const AddProduct = () => {
     useEffect(() => {
         fetchProduct();
         fetchCategories();
-    }, []); // This runs once when the component mounts
+    }, []);
+
+    const [loading,setLoading]=useState()
+     const onSubmitChange = async (e) => {
+        e.preventDefault();
+        try {
+            const responce= await axios.post("http://127.0.0.1:8000/api/products", productField);
+            console.log(responce)
+            setLoading(true);
+        } catch (err) {
+            console.log("Something Wrong");
+        }
+    }
+    if(loading){
+        return <AddProduct/>
+    }
 
     return (
         <div className="container mt-5">
@@ -76,47 +102,61 @@ const AddProduct = () => {
                                 className="form-control"
                                 name="name"
                                 placeholder="Enter Product Name"
-                                value={ProductField.name}
+                                value={productField.name}
                                 onChange={changeProductFieldHandler}
                                 required
                             />
                         </div>
-                        <div className="mb-3 mt-3">
-                              price:
-                                <input type="text" className="form-control" id="price" placeholder="Enter price" name="price" onChange={e => changeProductFieldHandler(e)} required/>
-                            </div>
-                            <div className="mb-3 mt-3">
-                              Description:
-                                <input type="text" className="form-control" id="password" placeholder="Enter description" name="description" onChange={e => changeProductFieldHandler(e)} required/>
-                            </div>
-                            <div className="mb-3 mt-3">
-    <label>Category:</label>
-    <select
-        className="form-control"
-        name="category_id"
-        value={ProductField.category_id}
-        onChange={changeProductFieldHandler}
-        required
-    >
-        <option value="">Select Category</option>
-        {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-                {category.name}
-            </option>
-        ))}
-    </select>
-</div>
 
-                        <button
-                            type="submit"
-                            className="btn btn-primary"
-                            disabled={loading} // Disable button while loading
-                        >
-                            {loading ? "Adding..." : "Add Product"}
-                        </button>
+                        <div className="mb-3 mt-3">
+                            <label>Price:</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="price"
+                                placeholder="Enter price"
+                                value={productField.price}
+                                onChange={changeProductFieldHandler}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3 mt-3">
+                            <label>Description:</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="description"
+                                placeholder="Enter description"
+                                value={productField.description}
+                                onChange={changeProductFieldHandler}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3 mt-3">
+                            <label>Category:</label>
+                            <select
+                                className="form-control"
+                                name="category_id"
+                                value={productField.category_id}
+                                onChange={changeProductFieldHandler}
+                                required
+                            >
+                                <option value="">Select Category</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <button type="submit" className="btn btn-primary" onClick={e => onSubmitChange(e)}>Add product</button>
                     </form>
                 </div>
-                <div className="col-md-10 mt-4">
+
+                <div className="col-md-12 mt-4">
                     <Product products={products} fetchProduct={fetchProduct} />
                 </div>
             </div>

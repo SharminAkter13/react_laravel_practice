@@ -7,7 +7,6 @@ const AddCategory = () => {
     const [categoryField, setCategoryField] = useState({
         name: "",
     });
-    const [loading, setLoading] = useState(false);
 
     // Handle input field change
     const changeCategoryFieldHandler = (e) => {
@@ -29,12 +28,12 @@ const AddCategory = () => {
 
     // Create a new category by sending data to the API
     const createCategory = async (e) => {
-        e.preventDefault(); // Prevent the form from submitting the default way
+        e.preventDefault(); 
         setLoading(true);
         try {
             await axios.post("http://127.0.0.1:8000/api/categories", categoryField);
-            fetchCategory(); // Re-fetch the updated category list
-            setCategoryField({ name: "" }); // Clear the input field after adding
+            fetchCategory(); 
+            setCategoryField({ name: "" }); 
         } catch (error) {
             console.error("Error creating category:", error);
         } finally {
@@ -44,7 +43,24 @@ const AddCategory = () => {
 
     useEffect(() => {
         fetchCategory();
-    }, []); // This runs once when the component mounts
+    }, []); 
+
+        const [loading,setLoading]=useState()
+     const onSubmitChange = async (e) => {
+        e.preventDefault();
+        try {
+            const responce= await axios.post("http://127.0.0.1:8000/api/categories", categoryField);
+            console.log(responce)
+            setLoading(true);
+        } catch (err) {
+            console.log("Something Wrong");
+        }
+    }
+    if(loading){
+        return <AddCategory/>
+    }
+
+
 
     return (
         <div className="container mt-5">
@@ -66,16 +82,11 @@ const AddCategory = () => {
                                 required
                             />
                         </div>
-                        <button
-                            type="submit"
-                            className="btn btn-primary"
-                            disabled={loading} // Disable button while loading
-                        >
-                            {loading ? "Adding..." : "Add Category"}
-                        </button>
+                           <button type="submit" className="btn btn-primary" onClick={e => onSubmitChange(e)}>Add Category</button>
+
                     </form>
                 </div>
-                <div className="col-md-10 mt-4">
+                <div className="col-md-12 mt-4">
                     <Category categories={categories} fetchCategory={fetchCategory} />
                 </div>
             </div>
