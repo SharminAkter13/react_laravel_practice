@@ -47,17 +47,15 @@ function Product() {
   return (
     <div className="container mt-5">
       <div className="card shadow-sm">
-        <div className="card-header bg-success text-white d-flex justify-content-between align-items-center">
+        <div className="card-header bg-primary text-white d-flex justify-content-between align-items-center">
           <h4 className="mb-0">Product List</h4>
-          <NavLink to={`/create-product`} className="btn btn-light btn-sm">
-            + Create Product
-          </NavLink>
         </div>
 
         <div className="card-body">
           <div className="table-responsive">
-            <table className="table table-success table-striped align-middle">
-              <thead>
+          <table className="table table-primary table-striped table-bordered align-middle">
+
+              <thead style={{textAlign:"center"}}>
                 <tr>
                   <th style={{ width: "25%" }}>Category</th>
                   <th>Products Details</th>
@@ -70,16 +68,14 @@ function Product() {
                     group.products.length > 0 && (
                       <tr key={group.category.id}>
                         {/* CATEGORY COLUMN */}
-                        <td>
-                          <strong>{group.category.name}</strong>
-                          <br />
-                          <small className="text-muted">ID: {group.category.id}</small>
+                        <td style={{textAlign:"center"}}>
+                          <strong>{group.category.name}</strong>                         
                         </td>
 
                         {/* PRODUCTS COLUMN */}
                         <td>
                           {group.products.map((p) => (
-                            <div key={p.id} className="mb-3 p-2 border rounded bg-white">
+                            <div key={p.id} className="mb-3 p-2 border border-success rounded ">
                               <div>
                                 <strong>Name:</strong> {p.name}
                               </div>
