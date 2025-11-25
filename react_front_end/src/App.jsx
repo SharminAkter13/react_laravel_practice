@@ -6,6 +6,9 @@ import Edit from './component/Edit';
 import Product from './component/products/Product';
 import AddProduct from './component/products/AddProduct';
 import EditProduct from './component/products/EditProduct';
+import User from './component/users/User';
+import AddUser from './component/users/AddUser';
+import EditUser from './component/users/EditUser';
 
 
 const App = () => {
@@ -20,6 +23,9 @@ const App = () => {
                <Route path="/product" element={<Product />} />
               <Route exact path='/add-product' element = {<AddProduct/>}/>
                <Route exact path='/edit-product/:id' element = {<EditProduct/>}/>
+               <Route path="/user" element={<User />} />
+              <Route exact path='/add-user' element = {<AddUser/>}/>
+               <Route exact path='/edit-user/:id' element = {<EditUser/>}/>
     </Routes>
   </BrowserRouter>
     </div>
