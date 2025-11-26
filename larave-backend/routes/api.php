@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -12,3 +13,5 @@ Route::get('/user', function (Request $request) {
 Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('users', UserController::class);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
