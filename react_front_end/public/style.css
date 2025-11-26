@@ -1,0 +1,28 @@
+ .register-img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin: 0 auto 15px auto;
+            display: block;
+            opacity: 0.9;
+          }
+
+          .register-card {
+            width: 420px;
+            border-radius: 12px;
+          }
+
+          .register-input {
+            border-radius: 12px !important;
+          }
+
+          .register-btn {
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 10px;
+          }
+
+          .register-link {
+            text-decoration: none;
+            font-weight: bold;
+          }

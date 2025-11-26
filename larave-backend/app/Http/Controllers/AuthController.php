@@ -26,24 +26,30 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+
+
+
+
+ public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid Credentials'], 401);
+        if(!$user || !Hash::check($request->password, $user->password)){
+            return response()->json(['message'=>'Invalid credentials'], 401);
         }
 
-
-        //  to generate new Token
-        $token = Str::random(60);
-        $user->update(['api_token' => $token]);
+        // Simple Token
+        $token = base64_encode($user->email);
 
         return response()->json([
-            'message' => 'Login Successful',
-            'token'   => $token
-        ]);
+            'message'=>'Login successful',
+            'token'=>$token,
+            'user'=>$user
+        ], 200);
     }
+
+
+
 
     public function user()
     {
